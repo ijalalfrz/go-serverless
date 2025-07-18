@@ -3,7 +3,7 @@ resource "aws_lambda_function" "function" {
   function_name = "${var.app_name}-${var.environment}"
   role          = aws_iam_role.lambda_role.arn
   handler       = "app"
-  runtime       = "go1.x"
+  runtime       = "provided.al2023"
   memory_size   = var.memory_size
   timeout       = var.timeout
 
