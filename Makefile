@@ -147,3 +147,23 @@ tf-local-apply: ## Apply Terraform changes for local development
 	@echo "Applying Terraform for Local"
 	@echo "=============================="
 	docker compose -f ${DOCKER_COMPOSE_FILE} run --rm terraform -chdir=/terraform/environments/local apply -auto-approve
+
+
+
+tf-dev-init:
+	@echo "=============================="
+	@echo "Initializing Terraform for Development"
+	@echo "=============================="
+	docker compose -f ${DOCKER_COMPOSE_FILE} run --rm terraform -chdir=/terraform/environments/development init
+
+tf-dev-plan:
+	@echo "=============================="
+	@echo "Planning Terraform for Development"
+	@echo "=============================="
+	docker compose -f ${DOCKER_COMPOSE_FILE} run --rm terraform -chdir=/terraform/environments/development plan
+
+tf-dev-validate:
+	@echo "=============================="
+	@echo "Validating Terraform for Development"
+	@echo "=============================="
+	docker compose -f ${DOCKER_COMPOSE_FILE} run --rm terraform -chdir=/terraform/environments/development validate
