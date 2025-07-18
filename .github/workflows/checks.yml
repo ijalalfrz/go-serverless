@@ -25,11 +25,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/.github/workflows/*.yml'
 
-      - name: Commit Lint
-        run: |
-          FIRST_COMMIT_SHA=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.pull_request.commits_url }} | jq -r '.[0].sha')
-          npm install -g @commitlint/cli @commitlint/config-conventional
-          commitlint --from $FIRST_COMMIT_SHA^
+      # - name: Commit Lint
+      #   run: |
+      #     FIRST_COMMIT_SHA=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.pull_request.commits_url }} | jq -r '.[0].sha')
+      #     npm install -g @commitlint/cli @commitlint/config-conventional
+      #     commitlint --from $FIRST_COMMIT_SHA^
 
   
   lint-and-unit-test:

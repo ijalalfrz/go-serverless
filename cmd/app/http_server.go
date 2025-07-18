@@ -38,6 +38,7 @@ var httpServerCmd = &cobra.Command{
 	},
 }
 
+// create lambda handler
 func getLambdaHandler(cfg config.Config) handler {
 	lang.SetSupportedLanguages(cfg.Locales.SupportedLanguages)
 	lang.SetBasePath(cfg.Locales.BasePath)
