@@ -30,7 +30,7 @@ resource "aws_iam_role" "lambda_role" {
 
   lifecycle {
     create_before_destroy = false
-    prevent_destroy = true
+    prevent_destroy       = true
   }
 }
 
