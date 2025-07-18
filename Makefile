@@ -174,6 +174,6 @@ make-zip:build-native
 	@echo "=============================="
 	@echo "Making zip file"
 	@echo "=============================="
-	zip -r bin/app.zip bin/app resources/	
+	zip -r app.zip bin/app resources/	
 
 
