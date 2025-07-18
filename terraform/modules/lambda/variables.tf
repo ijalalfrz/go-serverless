@@ -6,11 +6,6 @@ variable "environment" {
   type = string
 }
 
-variable "image_uri" {
-  type        = string
-  description = "ECR image URI"
-}
-
 variable "memory_size" {
   type    = number
   default = 128
@@ -28,4 +23,9 @@ variable "environment_variables" {
 
 variable "dynamodb_table_arn" {
   type = string
+}
+
+variable "lambda_zip_path" {
+  type        = string
+  description = "Path to the Lambda function zip file"
 }

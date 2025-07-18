@@ -2,32 +2,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-# Create ECR Repository
-resource "aws_ecr_repository" "app" {
-  name         = "${var.app_name}-${var.environment}"
-  force_delete = true
-}
-
-# Create ECR Lifecycle Policy
-resource "aws_ecr_lifecycle_policy" "app" {
-  repository = aws_ecr_repository.app.name
-
-  policy = jsonencode({
-    rules = [{
-      rulePriority = 1
-      description  = "Keep last 5 images"
-      selection = {
-        tagStatus   = "any"
-        countType   = "imageCountMoreThan"
-        countNumber = 5
-      }
-      action = {
-        type = "expire"
-      }
-    }]
-  })
-}
-
 module "dynamodb" {
   source = "../../modules/dynamodb"
 
@@ -42,11 +16,11 @@ module "dynamodb" {
 module "lambda" {
   source = "../../modules/lambda"
 
-  app_name    = var.app_name
-  environment = var.environment
-  image_uri   = "${aws_ecr_repository.app.repository_url}:latest"
-  memory_size = 128
-  timeout     = 30
+  app_name        = var.app_name
+  environment     = var.environment
+  lambda_zip_path = var.lambda_zip_path
+  memory_size     = 128
+  timeout         = 30
 
   environment_variables = {
     DYNAMODB_TABLE_NAME = module.dynamodb.table_name
