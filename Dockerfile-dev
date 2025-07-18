@@ -1,0 +1,11 @@
+FROM public.ecr.aws/lambda/provided:al2023
+
+
+ENV BUILD_DIR /home/builder
+ENV APP_HOME /home/runner/bin
+RUN mkdir -p $APP_HOME
+
+WORKDIR $APP_HOME
+
+
+ENTRYPOINT ["./app", "http"]
