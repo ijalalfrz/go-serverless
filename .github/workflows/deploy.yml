@@ -41,12 +41,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Import Resources
-        run: |
-          terraform import module.dynamodb.aws_dynamodb_table.table devices_rizal_alfarizi_development || true
-          terraform import module.lambda.aws_iam_role.lambda_role go-serverless-development-lambda-role || true
-        working-directory: terraform/environments/development
-
 
       - name: Terraform Init
         run: terraform init
