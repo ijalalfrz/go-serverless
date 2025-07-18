@@ -1,10 +1,10 @@
 resource "aws_lambda_function" "function" {
   function_name = "${var.app_name}-${var.environment}"
-  role         = aws_iam_role.lambda_role.arn
-  package_type = "Image"
-  image_uri    = var.image_uri
-  memory_size  = var.memory_size
-  timeout      = var.timeout
+  role          = aws_iam_role.lambda_role.arn
+  package_type  = "Image"
+  image_uri     = var.image_uri
+  memory_size   = var.memory_size
+  timeout       = var.timeout
 
   environment {
     variables = var.environment_variables

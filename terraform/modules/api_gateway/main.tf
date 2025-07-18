@@ -4,8 +4,8 @@ resource "aws_apigatewayv2_api" "api" {
 }
 
 resource "aws_apigatewayv2_stage" "stage" {
-  api_id = aws_apigatewayv2_api.api.id
-  name   = var.environment
+  api_id      = aws_apigatewayv2_api.api.id
+  name        = var.environment
   auto_deploy = true
 }
 
@@ -18,7 +18,7 @@ resource "aws_apigatewayv2_integration" "lambda" {
 }
 
 resource "aws_apigatewayv2_route" "route" {
-  api_id = aws_apigatewayv2_api.api.id
+  api_id    = aws_apigatewayv2_api.api.id
   route_key = "ANY /{proxy+}"
   target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }

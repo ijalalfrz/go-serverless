@@ -4,7 +4,7 @@ provider "aws" {
 
 # Create ECR Repository
 resource "aws_ecr_repository" "app" {
-  name = "${var.app_name}-${var.environment}"
+  name         = "${var.app_name}-${var.environment}"
   force_delete = true
 }
 
@@ -42,17 +42,17 @@ module "dynamodb" {
 module "lambda" {
   source = "../../modules/lambda"
 
-  app_name        = var.app_name
-  environment     = var.environment
-  image_uri       = "${aws_ecr_repository.app.repository_url}:latest"
-  memory_size     = 128
-  timeout         = 30
+  app_name    = var.app_name
+  environment = var.environment
+  image_uri   = "${aws_ecr_repository.app.repository_url}:latest"
+  memory_size = 128
+  timeout     = 30
 
   environment_variables = {
     DYNAMODB_TABLE_NAME = module.dynamodb.table_name
-    LOG_LEVEL          = "debug"
-    DYNAMODB_REGION   = var.aws_region
-    PROFILING_ENABLED = "false"
+    LOG_LEVEL           = "debug"
+    DYNAMODB_REGION     = var.aws_region
+    PROFILING_ENABLED   = "false"
   }
 
   dynamodb_table_arn = module.dynamodb.table_arn
@@ -61,8 +61,8 @@ module "lambda" {
 module "api_gateway" {
   source = "../../modules/api_gateway"
 
-  app_name                    = var.app_name
-  environment                 = var.environment
-  lambda_function_name        = module.lambda.function_name
-  lambda_function_invoke_arn  = module.lambda.function_invoke_arn
+  app_name                   = var.app_name
+  environment                = var.environment
+  lambda_function_name       = module.lambda.function_name
+  lambda_function_invoke_arn = module.lambda.function_invoke_arn
 }

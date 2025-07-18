@@ -122,6 +122,13 @@ api-docs: ## Generate API docs with swaggo
 #======================#
 
 # Terraform Local
+
+tf-local-fmt: ## Format Terraform files for local development
+	@echo "=============================="
+	@echo "Formatting Terraform for Local"
+	@echo "=============================="
+	docker compose -f ${DOCKER_COMPOSE_FILE} run --rm terraform -chdir=/terraform fmt -recursive
+
 tf-local-init: ## Initialize Terraform for local development
 	@echo "================================="
 	@echo "Initializing Terraform for Local"
