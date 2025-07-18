@@ -12,8 +12,15 @@ resource "aws_lambda_function" "function" {
   }
 }
 
+resource "random_string" "lambda_suffix" {
+  length  = 8
+  special = false
+  upper   = false
+}
+
+
 resource "aws_iam_role" "lambda_role" {
-  name = "${var.app_name}-${var.environment}-lambda-role"
+  name = "${var.app_name}-${var.environment}-lambda-role-${random_string.lambda_suffix.result}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -41,7 +48,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy" {
 
 # Add DynamoDB permissions
 resource "aws_iam_role_policy" "dynamodb_policy" {
-  name = "${var.app_name}-${var.environment}-dynamodb-policy"
+  name = "${var.app_name}-${var.environment}-dynamodb-policy-${random_string.lambda_suffix.result}"
   role = aws_iam_role.lambda_role.id
 
   policy = jsonencode({
