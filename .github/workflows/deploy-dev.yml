@@ -1,0 +1,25 @@
+name: Deploy All
+
+on:
+  workflow_dispatch: # Manual trigger only
+    inputs:
+      deploy_infrastructure:
+        description: 'Deploy infrastructure changes'
+        type: boolean
+        default: false
+      deploy_code:
+        description: 'Deploy code changes'
+        type: boolean
+        default: true
+
+jobs:
+  deploy-infrastructure:
+    if: ${{ inputs.deploy_infrastructure }}
+    uses: ./.github/workflows/infra.yml
+    secrets: inherit
+
+  deploy-code:
+    if: ${{ inputs.deploy_code }}
+    uses: ./.github/workflows/code.yml
+    secrets: inherit
+    needs: deploy-infrastructure

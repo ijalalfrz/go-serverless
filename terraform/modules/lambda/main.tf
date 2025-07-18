@@ -2,8 +2,8 @@ resource "aws_lambda_function" "function" {
   filename      = var.lambda_zip_path
   function_name = "${var.app_name}-${var.environment}"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "bootstrap"
-  runtime       = "provided.al2023"
+  handler       = "app"
+  runtime       = "go1.x"
   memory_size   = var.memory_size
   timeout       = var.timeout
 
