@@ -170,10 +170,11 @@ tf-dev-validate:
 
 
 make-zip:
-make-zip:build-native
+make-zip: build-native
 	@echo "=============================="
-	@echo "Making zip file"
+	@echo "Making zip file with bootstrap script"
 	@echo "=============================="
-	zip -r app.zip bin/app resources/	
-
-
+	@chmod +x bootstrap
+	@zip app.zip bootstrap bin/app resources/
+	@echo "Zip structure:"
+	@unzip -l app.zip
