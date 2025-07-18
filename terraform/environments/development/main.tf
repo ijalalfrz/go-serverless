@@ -2,6 +2,14 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "aws_dynamodb_table" "existing_table" {
+  name = "${var.table_name}_${var.environment}"
+}
+
+data "aws_iam_role" "existing_role" {
+  name = "${var.app_name}-${var.environment}-lambda-role"
+}
+
 module "dynamodb" {
   source = "../../modules/dynamodb"
 
