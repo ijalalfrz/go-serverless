@@ -1,0 +1,63 @@
+version: '3.1'
+
+services:
+
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile-builder
+    volumes:
+      - .:/app
+    working_dir: /app
+    tty: true
+    restart: always
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    entrypoint: ["/usr/local/bin/aws-lambda-rie"]
+    command: ["./app", "http"]
+    volumes:
+      - ./bin:/home/runner/bin
+      - ./resources:/home/runner/resources
+    ports:
+      - "9000:8080"
+    tty: true
+    env_file:
+      - .env
+    depends_on:
+      - dynamodb
+    restart: always
+
+  dynamodb:
+    image: amazon/dynamodb-local:latest
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./dynamodb_data:/home/dynamodblocal/data
+    working_dir: /home/dynamodblocal
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+
+  swagger:
+    image: expend/swagger-ui
+    ports:
+      - "8003:8080"
+    volumes:
+      - ./docs:/docs
+    environment:
+      - SWAGGER_JSON=/docs/swagger.json
+      - BASE_URL=/swagger
+
+
+  terraform:
+    image: hashicorp/terraform:latest
+    volumes:
+      - ./terraform:/terraform
+    env_file:
+      - .env
+    depends_on:
+      - dynamodb
+volumes:
+  dynamodb_data:
