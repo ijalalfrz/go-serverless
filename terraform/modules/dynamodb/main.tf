@@ -20,6 +20,7 @@ resource "aws_dynamodb_table" "table" {
 
   lifecycle {
     prevent_destroy = true
+    create_before_destroy = false
     ignore_changes = [
       read_capacity,
       write_capacity
