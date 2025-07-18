@@ -6,6 +6,9 @@ on:
     paths:
       - 'terraform/**'
       - '.github/workflows/infra.yml'
+      - 'cmd/**'      # Add code paths
+      - 'internal/**' # Add code paths
+      - 'go.mod'      # Add code paths
 
 env:
   AWS_REGION: ap-southeast-1
@@ -20,6 +23,16 @@ jobs:
     
     steps:
       - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.23.4
+
+      - name: Build and make zip
+        run: |
+          make make-zip
+          ls -la app.zip
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -38,8 +51,12 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
         working-directory: terraform/environments/development
+        env:
+          TF_VAR_lambda_zip_path: "${{ github.workspace }}/app.zip"
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         run: terraform apply -auto-approve
         working-directory: terraform/environments/development
+        env:
+          TF_VAR_lambda_zip_path: "${{ github.workspace }}/app.zip"
