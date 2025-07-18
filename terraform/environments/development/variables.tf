@@ -18,7 +18,8 @@ variable "table_name" {
   default = "devices_rizal_alfarizi"
 }
 
+
 variable "lambda_zip_path" {
-  type    = string
-  default = "../../bin/app.zip"
+  type        = string
+  description = "Path to the Lambda function zip file"
 }

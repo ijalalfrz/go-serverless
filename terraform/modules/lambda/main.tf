@@ -1,8 +1,9 @@
 resource "aws_lambda_function" "function" {
+  filename      = var.lambda_zip_path
   function_name = "${var.app_name}-${var.environment}"
   role          = aws_iam_role.lambda_role.arn
-  package_type  = "Image"
-  image_uri     = var.image_uri
+  handler       = "bootstrap"
+  runtime       = "provided.al2023"
   memory_size   = var.memory_size
   timeout       = var.timeout
 

@@ -167,3 +167,13 @@ tf-dev-validate:
 	@echo "Validating Terraform for Development"
 	@echo "=============================="
 	docker compose -f ${DOCKER_COMPOSE_FILE} run --rm terraform -chdir=/terraform/environments/development validate
+
+
+make-zip:
+make-zip:build-native
+	@echo "=============================="
+	@echo "Making zip file"
+	@echo "=============================="
+	zip -r bin/app.zip bin/app resources/	
+
+
