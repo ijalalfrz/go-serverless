@@ -24,11 +24,16 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: '**/.github/workflows/*.yml'
-      - name: Commit Lint
+
+      - name: Install commitlint
         run: |
-          FIRST_COMMIT_SHA=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.pull_request.commits_url }} | jq -r '.[0].sha')
           npm install -g @commitlint/cli @commitlint/config-conventional
-          commitlint --from $FIRST_COMMIT_SHA^
+
+      - name: Lint commits
+        run: |
+          git log --format="%H" origin/${{ github.base_ref }}..${{ github.head_ref }} | \
+          xargs -I {} sh -c 'git show -s --format=%B {} | commitlint'
+
   
   lint-and-unit-test:
     name: lint-and-unit-test
