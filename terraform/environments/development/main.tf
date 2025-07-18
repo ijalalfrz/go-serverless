@@ -10,7 +10,13 @@ data "aws_iam_role" "existing_role" {
   name = "${var.app_name}-${var.environment}-lambda-role"
 }
 
+locals {
+  create_table = can(data.aws_dynamodb_table.existing_table.name) ? false : true
+  create_role = can(data.aws_iam_role.existing_role.name) ? false : true
+}
+
 module "dynamodb" {
+  count = local.create_table ? 1 : 0
   source = "../../modules/dynamodb"
 
   environment = var.environment
@@ -22,6 +28,7 @@ module "dynamodb" {
 }
 
 module "lambda" {
+  count  = local.create_role ? 1 : 0
   source = "../../modules/lambda"
 
   app_name        = var.app_name
