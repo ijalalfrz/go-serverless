@@ -1,0 +1,77 @@
+@startuml C4_Sequence
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Sequence Diagram - Device Management Operations
+
+actor client as "API Client"
+participant api_gateway as "API Gateway"
+participant lambda as "Lambda Function"
+participant dynamodb as "DynamoDB"
+participant cloudwatch as "CloudWatch"
+
+== Create Device ==
+client -> api_gateway: POST /api/devices
+activate api_gateway
+api_gateway -> lambda: Invoke Lambda (proxy integration)
+activate lambda
+
+lambda -> lambda: Validate request
+lambda -> lambda: Check device existence
+lambda -> dynamodb: Query device by ID
+activate dynamodb
+dynamodb --> lambda: Device not found
+deactivate dynamodb
+
+lambda -> dynamodb: Create device
+activate dynamodb
+dynamodb --> lambda: Device created
+deactivate dynamodb
+
+lambda -> cloudwatch: Log operation
+activate cloudwatch
+cloudwatch --> lambda: Logged
+deactivate cloudwatch
+
+lambda --> api_gateway: HTTP 201 Created
+deactivate lambda
+api_gateway --> client: HTTP 201 Created
+deactivate api_gateway
+
+== Get Device ==
+client -> api_gateway: GET /api/devices/{id}
+activate api_gateway
+api_gateway -> lambda: Invoke Lambda (proxy integration)
+activate lambda
+
+lambda -> lambda: Parse device ID
+lambda -> dynamodb: Get device by ID
+activate dynamodb
+dynamodb --> lambda: Device data
+deactivate dynamodb
+
+lambda -> lambda: Map to response DTO
+lambda -> cloudwatch: Log operation
+activate cloudwatch
+cloudwatch --> lambda: Logged
+deactivate cloudwatch
+
+lambda --> api_gateway: HTTP 200 OK + Device data
+deactivate lambda
+api_gateway --> client: HTTP 200 OK + Device data
+deactivate api_gateway
+
+== Health Check ==
+client -> api_gateway: GET /health
+activate api_gateway
+api_gateway -> lambda: Invoke Lambda (proxy integration)
+activate lambda
+
+lambda -> lambda: Return health status
+lambda --> api_gateway: HTTP 204 No Content
+deactivate lambda
+api_gateway --> client: HTTP 204 No Content
+deactivate api_gateway
+
+@enduml 

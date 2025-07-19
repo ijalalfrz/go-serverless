@@ -1,0 +1,34 @@
+@startuml C4_Component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Component Diagram - Lambda Function Internal Architecture
+
+Container_Boundary(lambda, "Lambda Function") {
+    Component(http_handler, "HTTP Handler", "Go", "Entry point for HTTP requests, handles Lambda proxy integration")
+    Component(router, "Chi Router", "Go", "HTTP routing and middleware management")
+    Component(device_endpoint, "Device Endpoint", "Go", "HTTP endpoint handlers for device operations")
+    Component(device_service, "Device Service", "Go", "Business logic for device management operations")
+    Component(device_repository, "Device Repository", "Go", "Data access layer for device operations")
+    Component(config, "Configuration", "Go", "Application configuration management")
+    Component(logger, "Logger", "Go", "Structured logging with slog")
+    Component(exception_handler, "Exception Handler", "Go", "Error handling and HTTP status mapping")
+    Component(i18n, "Internationalization", "Go", "Multi-language support")
+}
+
+Container(dynamodb, "DynamoDB", "NoSQL Database", "Stores device data")
+Container(api_gateway, "API Gateway", "HTTP API", "Manages HTTP requests")
+
+Rel(api_gateway, http_handler, "Invokes", "Lambda proxy integration")
+Rel(http_handler, router, "Uses", "Routes requests")
+Rel(router, device_endpoint, "Routes to", "Device endpoints")
+Rel(device_endpoint, device_service, "Uses", "Business logic")
+Rel(device_service, device_repository, "Uses", "Data access")
+Rel(device_repository, dynamodb, "Reads/Writes", "Device data")
+Rel(device_endpoint, config, "Uses", "Configuration")
+Rel(device_endpoint, logger, "Uses", "Logging")
+Rel(device_endpoint, exception_handler, "Uses", "Error handling")
+Rel(device_endpoint, i18n, "Uses", "Localization")
+
+@enduml 
