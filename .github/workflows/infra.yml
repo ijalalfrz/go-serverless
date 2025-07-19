@@ -2,6 +2,9 @@ name: Deploy Infrastructure
 
 on:
   workflow_call:
+    permissions:
+      id-token: write
+      contents: read
   push:
     branches: [ main ]
     paths:
