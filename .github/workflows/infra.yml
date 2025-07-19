@@ -1,14 +1,12 @@
 name: Deploy Infrastructure
 
 on:
+  workflow_call:
   push:
     branches: [ main ]
     paths:
       - 'terraform/**'
       - '.github/workflows/infra.yml'
-      - 'cmd/**'      # Add code paths
-      - 'internal/**' # Add code paths
-      - 'go.mod'      # Add code paths
 
 env:
   AWS_REGION: ap-southeast-1

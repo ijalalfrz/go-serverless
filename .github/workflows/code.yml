@@ -1,6 +1,7 @@
 name: Deploy Code
 
 on:
+  workflow_call:
   push:
     branches: [ main ]
     paths:
