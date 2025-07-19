@@ -175,6 +175,6 @@ make-zip: build-native
 	@echo "Making zip file with bootstrap script"
 	@echo "=============================="
 	@chmod +x bootstrap
-	@zip app.zip bootstrap bin/app resources/
+	@zip -r app.zip bootstrap bin/app resources/
 	@echo "Zip structure:"
 	@unzip -l app.zip
