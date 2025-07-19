@@ -1,3 +1,15 @@
+terraform {
+
+  backend "s3" {
+    bucket         = "go-serverless-terraform-state"
+    key            = "development/terraform.tfstate"
+    region         = "ap-southeast-1"
+    dynamodb_table = "go-serverless-terraform-locks"
+    encrypt        = true
+  }
+}
+
+
 provider "aws" {
   region = var.aws_region
 }
