@@ -1,3 +1,5 @@
+//go:build unit
+
 package service
 
 import (
@@ -8,13 +10,13 @@ import (
 	"github.com/ijalalfrz/go-serverless/internal/pkg/exception"
 )
 
-// Mock errors
+// Mock errors.
 var (
 	ErrMockDB      = errors.New("mock db error")
 	ErrMockPublish = errors.New("mock publish error")
 )
 
-// MockDeviceRepository implements DeviceRepository interface
+// MockDeviceRepository implements DeviceRepository interface.
 type MockDeviceRepository struct {
 	devices    []model.Device
 	err        error
@@ -52,7 +54,7 @@ func (m *MockDeviceRepository) GetByID(ctx context.Context, id string) (model.De
 	return model.Device{}, exception.ErrRecordNotFound
 }
 
-// Test data
+// Test data.
 var mockDevices = []model.Device{
 	{
 		ID:          "device-1",

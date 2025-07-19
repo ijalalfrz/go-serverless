@@ -73,7 +73,7 @@ static-analysis: create-env-file
 	@echo "======================="
 	@echo "Running static analysis"
 	@echo "======================="
-	${RUN_IN_DOCKER} golangci-lint run
+	${RUN_IN_DOCKER} golangci-lint run --fix
 
 tests-suite: ## Run all the tests suite
 tests-suite: tests-unit tests-integration

@@ -11,15 +11,14 @@ import (
 )
 
 func InitDynamoDB(appConfig cfg.Config) *dynamodb.Client {
-
 	opts := []func(*config.LoadOptions) error{
 		config.WithRegion(appConfig.DynamoDB.Region),
 	}
 
 	if appConfig.DynamoDB.Endpoint != "" {
-		opts = append(opts, config.WithEndpointResolver(aws.EndpointResolverFunc(
-			func(service, region string) (aws.Endpoint, error) {
-				return aws.Endpoint{URL: appConfig.DynamoDB.Endpoint}, nil
+		opts = append(opts, config.WithEndpointResolver(aws.EndpointResolverFunc( //nolint:staticcheck
+			func(_, _ string) (aws.Endpoint, error) { //nolint:staticcheck
+				return aws.Endpoint{URL: appConfig.DynamoDB.Endpoint}, nil //nolint:staticcheck
 			},
 		)))
 	}

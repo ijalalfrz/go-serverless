@@ -4,6 +4,7 @@ run:
   skip-dirs:
     - vendor
     - test
+    - mock
   modules-download-mode: vendor
 
 linters:

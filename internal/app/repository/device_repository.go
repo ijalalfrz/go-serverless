@@ -25,8 +25,6 @@ func NewDeviceRepository(db *dynamodb.Client, tableName string) *DeviceRepositor
 }
 
 func (r *DeviceRepository) Create(ctx context.Context, device model.Device) error {
-
-	// Normalize ID
 	id := normalizeID(device.ID)
 
 	device.PK = "DEVICE#" + id
@@ -41,7 +39,7 @@ func (r *DeviceRepository) Create(ctx context.Context, device model.Device) erro
 		Item:      data,
 	})
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create device: %w", err)
 	}
 
 	return nil
@@ -49,6 +47,7 @@ func (r *DeviceRepository) Create(ctx context.Context, device model.Device) erro
 
 func (r *DeviceRepository) GetByID(ctx context.Context, id string) (model.Device, error) {
 	nid := normalizeID(id)
+
 	out, err := r.db.GetItem(ctx, &dynamodb.GetItemInput{
 		TableName: &r.tableName,
 		Key: map[string]types.AttributeValue{
@@ -56,7 +55,7 @@ func (r *DeviceRepository) GetByID(ctx context.Context, id string) (model.Device
 		},
 	})
 	if err != nil {
-		return model.Device{}, err
+		return model.Device{}, fmt.Errorf("failed to get device: %w", err)
 	}
 
 	if out.Item == nil {
@@ -69,6 +68,7 @@ func (r *DeviceRepository) GetByID(ctx context.Context, id string) (model.Device
 	}
 
 	device := model.Device{}
+
 	err = attributevalue.UnmarshalMap(out.Item, &device)
 	if err != nil {
 		return model.Device{}, fmt.Errorf("failed to unmarshal device: %w", err)

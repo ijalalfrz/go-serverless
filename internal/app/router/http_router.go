@@ -45,7 +45,6 @@ func MakeHTTPRouter(
 				httptransport.ResponseWithBody,
 			))
 		})
-
 	})
 
 	return router
