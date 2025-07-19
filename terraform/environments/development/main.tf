@@ -1,7 +1,7 @@
 terraform {
 
   backend "s3" {
-    bucket         = "go-serverless-terraform-state"
+    bucket         = "go-serverless-terraform-state-rizal-alfarizi"
     key            = "development/terraform.tfstate"
     region         = "ap-southeast-1"
     dynamodb_table = "go-serverless-terraform-locks"
