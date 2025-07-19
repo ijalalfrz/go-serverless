@@ -11,7 +11,7 @@ import (
 // CreateDeviceRequest is the request body for the CreateDevice endpoint
 type CreateDeviceRequest struct {
 	ID          string `json:"id" validate:"required"`
-	DeviceModel string `json:"device_model" validate:"required"`
+	DeviceModel string `json:"deviceModel" validate:"required"`
 	Name        string `json:"name" validate:"required"`
 	Note        string `json:"note" validate:"required"`
 	Serial      string `json:"serial" validate:"required"`

@@ -30,6 +30,15 @@ func (s *DeviceService) CreateDevice(ctx context.Context, req dto.CreateDeviceRe
 		Serial:      req.Serial,
 	}
 
+	existingDevice, err := s.deviceRepo.GetByID(ctx, req.ID)
+	if err != nil {
+		return fmt.Errorf("failed to get device: %w", err)
+	}
+
+	if existingDevice.ID != "" {
+		return fmt.Errorf("device already exists")
+	}
+
 	if err := s.deviceRepo.Create(ctx, device); err != nil {
 		return fmt.Errorf("failed to create device: %w", err)
 	}

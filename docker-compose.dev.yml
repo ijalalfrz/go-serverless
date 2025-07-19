@@ -40,17 +40,6 @@ services:
     working_dir: /home/dynamodblocal
     command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
 
-  swagger:
-    image: expend/swagger-ui
-    ports:
-      - "8003:8080"
-    volumes:
-      - ./docs:/docs
-    environment:
-      - SWAGGER_JSON=/docs/swagger.json
-      - BASE_URL=/swagger
-
-
   terraform:
     image: hashicorp/terraform:latest
     volumes:
