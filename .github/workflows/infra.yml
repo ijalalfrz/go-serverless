@@ -2,9 +2,6 @@ name: Deploy Infrastructure
 
 on:
   workflow_call:
-    permissions:
-      id-token: write
-      contents: read
   push:
     branches: [ main ]
     paths:
@@ -18,10 +15,7 @@ jobs:
   deploy-infrastructure:
     runs-on: ubuntu-latest
     environment: development
-    permissions:
-      id-token: write
-      contents: read
-    
+
     steps:
       - uses: actions/checkout@v3
 
