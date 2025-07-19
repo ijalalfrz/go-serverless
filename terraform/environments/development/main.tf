@@ -35,11 +35,12 @@ module "lambda" {
   timeout         = 30
 
   environment_variables = {
-    DYNAMODB_TABLE_NAME = module.dynamodb.table_name
-    LOG_LEVEL           = "debug"
-    DYNAMODB_REGION     = var.aws_region
-    PROFILING_ENABLED   = "false"
-    LOCALES_BASE_PATH   = "./resources/locales"
+    DYNAMODB_TABLE_NAME         = module.dynamodb.table_name
+    LOG_LEVEL                   = "debug"
+    DYNAMODB_REGION             = var.aws_region
+    PROFILING_ENABLED           = "false"
+    LOCALES_BASE_PATH           = "./resources/locales"
+    LOCALES_SUPPORTED_LANGUAGES = "en,id"
   }
 
   dynamodb_table_arn = module.dynamodb.table_arn
