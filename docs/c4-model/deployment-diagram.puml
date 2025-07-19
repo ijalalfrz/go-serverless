@@ -1,0 +1,70 @@
+@startuml C4_Deployment
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Deployment Diagram - Go Serverless Application
+
+!define DEVICE_COLOR #1168BD
+!define AWS_COLOR #FF9900
+!define GITHUB_COLOR #181717
+
+skinparam rectangle {
+    BackgroundColor<<AWS>> #FF9900
+    BorderColor<<AWS>> #FF9900
+    FontColor<<AWS>> #FFFFFF
+}
+
+skinparam rectangle {
+    BackgroundColor<<GitHub>> #181717
+    BorderColor<<GitHub>> #181717
+    FontColor<<GitHub>> #FFFFFF
+}
+
+Deployment_Node(aws_cloud, "AWS Cloud", "ap-southeast-1") {
+    Deployment_Node(api_gateway_node, "API Gateway", "HTTP API") {
+        Container(api_gateway, "API Gateway", "HTTP API", "Manages HTTP requests and routing")
+    }
+    
+    Deployment_Node(lambda_node, "Lambda Runtime", "Go 1.23") {
+        Container(lambda_function, "Lambda Function", "Go", "Device management application")
+    }
+    
+    Deployment_Node(dynamodb_node, "DynamoDB", "NoSQL") {
+        Container(dynamodb, "DynamoDB Table", "NoSQL Database", "Device data storage")
+    }
+    
+    Deployment_Node(s3_node, "S3", "Object Storage") {
+        Container(s3_bucket, "S3 Bucket", "Object Storage", "Lambda deployment packages and Terraform state")
+    }
+    
+    Deployment_Node(cloudwatch_node, "CloudWatch", "Monitoring") {
+        Container(cloudwatch_logs, "CloudWatch Logs", "Logging", "Application logs")
+        Container(cloudwatch_metrics, "CloudWatch Metrics", "Metrics", "Performance metrics")
+    }
+}
+
+Deployment_Node(github_actions, "GitHub Actions", "CI/CD") {
+    Container(github_workflows, "GitHub Workflows", "YAML", "Automated deployment pipelines")
+}
+
+Deployment_Node(developer, "Developer Machine", "Local Development") {
+    Container(docker_compose, "Docker Compose", "Local Environment", "Local development with DynamoDB Local")
+    Container(terraform_cli, "Terraform CLI", "IaC", "Infrastructure management")
+}
+
+Rel(api_gateway, lambda_function, "Invokes", "Lambda proxy integration")
+Rel(lambda_function, dynamodb, "Reads/Writes", "AWS SDK v2")
+Rel(lambda_function, s3_bucket, "Reads", "Deployment package")
+Rel(lambda_function, cloudwatch_logs, "Logs to", "Structured logs")
+Rel(lambda_function, cloudwatch_metrics, "Sends", "Performance metrics")
+
+Rel(github_workflows, s3_bucket, "Deploys to", "Lambda package")
+Rel(github_workflows, api_gateway, "Updates", "API configuration")
+Rel(github_workflows, dynamodb, "Creates", "Table schema")
+
+Rel(developer, docker_compose, "Uses", "Local development")
+Rel(developer, terraform_cli, "Uses", "Infrastructure management")
+Rel(terraform_cli, s3_bucket, "Manages", "Terraform state")
+
+@enduml 

@@ -1,0 +1,30 @@
+@startuml C4_Container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram - Go Serverless Application
+
+Person(client, "API Client", "External applications or users consuming the device management API")
+
+System_Boundary(c1, "Go Serverless System") {
+    Container(api_gateway, "API Gateway", "HTTP API", "Manages HTTP requests, authentication, and routing to Lambda functions")
+    Container(lambda_function, "Lambda Function", "Go", "Handles HTTP requests, implements business logic, and manages device operations")
+    Container(dynamodb, "DynamoDB", "NoSQL Database", "Stores device data with high availability and scalability")
+}
+
+System_Ext(s3, "S3", "Object Storage", "Stores Lambda deployment packages and Terraform state")
+System_Ext(cloudwatch, "CloudWatch", "Monitoring", "Logs, metrics, and alarms")
+System_Ext(terraform, "Terraform", "IaC", "Infrastructure as Code for AWS resource management")
+
+Rel(client, api_gateway, "Uses", "HTTPS/REST API")
+Rel(api_gateway, lambda_function, "Invokes", "Lambda proxy integration")
+Rel(lambda_function, dynamodb, "Reads/Writes", "Device data via AWS SDK")
+Rel(lambda_function, s3, "Reads", "Deployment package")
+Rel(lambda_function, cloudwatch, "Logs to", "Application logs and metrics")
+Rel(terraform, s3, "Manages", "Infrastructure state")
+Rel(terraform, api_gateway, "Creates", "API Gateway resources")
+Rel(terraform, lambda_function, "Creates", "Lambda function")
+Rel(terraform, dynamodb, "Creates", "DynamoDB table")
+
+@enduml 

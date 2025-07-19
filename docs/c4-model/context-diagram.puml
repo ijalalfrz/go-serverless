@@ -1,0 +1,26 @@
+@startuml C4_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Context Diagram - Go Serverless Application
+
+Person(client, "API Client", "External applications or users consuming the device management API")
+
+System_Boundary(c1, "Go Serverless System") {
+    System(go_serverless, "Go Serverless Application", "Provides device management capabilities through REST API endpoints")
+}
+
+System_Ext(aws_lambda, "AWS Lambda", "Serverless compute platform")
+System_Ext(api_gateway, "API Gateway", "HTTP API management and routing")
+System_Ext(dynamodb, "DynamoDB", "NoSQL database for device data storage")
+System_Ext(s3, "S3", "Object storage for Lambda deployment packages")
+System_Ext(cloudwatch, "CloudWatch", "Logging and monitoring")
+
+Rel(client, api_gateway, "Uses", "HTTPS/REST API")
+Rel(api_gateway, aws_lambda, "Invokes", "Lambda proxy integration")
+Rel(aws_lambda, dynamodb, "Reads/Writes", "Device data")
+Rel(aws_lambda, s3, "Reads", "Deployment package")
+Rel(aws_lambda, cloudwatch, "Logs to", "Application logs")
+
+@enduml 
