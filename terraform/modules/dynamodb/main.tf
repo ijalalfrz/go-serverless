@@ -20,7 +20,7 @@ resource "aws_dynamodb_table" "table" {
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes = all  # Ignores all changes to existing table
+    ignore_changes  = all # Ignores all changes to existing table
   }
 
 }

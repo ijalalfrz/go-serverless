@@ -123,7 +123,7 @@ api-docs: ## Generate API docs with swaggo
 
 # Terraform Local
 
-tf-local-fmt: ## Format Terraform files for local development
+tf-fmt: ## Format Terraform files for  development
 	@echo "=============================="
 	@echo "Formatting Terraform for Local"
 	@echo "=============================="
