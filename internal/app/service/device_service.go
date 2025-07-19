@@ -2,10 +2,12 @@ package service
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/ijalalfrz/go-serverless/internal/app/dto"
 	"github.com/ijalalfrz/go-serverless/internal/app/model"
+	"github.com/ijalalfrz/go-serverless/internal/pkg/exception"
 )
 
 type DeviceRepository interface {
@@ -31,12 +33,18 @@ func (s *DeviceService) CreateDevice(ctx context.Context, req dto.CreateDeviceRe
 	}
 
 	existingDevice, err := s.deviceRepo.GetByID(ctx, req.ID)
-	if err != nil {
+	if err != nil && !errors.Is(err, exception.ErrRecordNotFound) {
 		return fmt.Errorf("failed to get device: %w", err)
 	}
 
-	if existingDevice.ID != "" {
-		return fmt.Errorf("device already exists")
+	// If device exists (no error and ID is not empty)
+	if err == nil && existingDevice.ID != "" {
+		err := exception.ErrConflict
+		err.MessageVars = map[string]interface{}{
+			"name": "device",
+		}
+
+		return err
 	}
 
 	if err := s.deviceRepo.Create(ctx, device); err != nil {
