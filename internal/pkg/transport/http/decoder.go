@@ -23,11 +23,13 @@ func Decoder(req *http.Request, val interface{}) error {
 	var err error
 
 	contentTypeHeader := req.Header.Get("Content-Type")
-	if strings.Contains(contentTypeHeader, "application/x-www-form-urlencoded") {
+
+	switch {
+	case strings.Contains(contentTypeHeader, "application/x-www-form-urlencoded"):
 		err = render.DecodeForm(req.Body, val)
-	} else if strings.Contains(contentTypeHeader, "application/json") {
+	case strings.Contains(contentTypeHeader, "application/json"):
 		err = render.DecodeJSON(req.Body, val)
-	} else {
+	default:
 		err = render.DecodeJSON(req.Body, val)
 	}
 

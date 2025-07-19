@@ -29,7 +29,7 @@ func makeCreateDeviceEndpoint(deviceService DeviceService) endpoint.Endpoint {
 
 		err := deviceService.CreateDevice(ctx, *req)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("device service: %w", err)
 		}
 
 		return nil, nil
@@ -45,7 +45,7 @@ func makeGetDeviceByIDEndpoint(deviceService DeviceService) endpoint.Endpoint {
 
 		device, err := deviceService.GetDeviceByID(ctx, *req)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("device service: %w", err)
 		}
 
 		return device, nil

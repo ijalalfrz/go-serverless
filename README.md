@@ -124,7 +124,7 @@ make environment
 make build
 
 # Run tests
-make tests-suite
+make tests-unit
 
 # Run static analysis
 make static-analysis
@@ -352,3 +352,8 @@ curl --location --request GET 'https://pp3bliepuc.execute-api.ap-southeast-1.ama
     "serial": "A020000102"
 }'
 ```
+
+### Assumptions
+- prefix /device/ in creation is a must for device id to make sure it is valid device
+- prefix /devicemodels/ in creation is a must for device id to make sure it is valid device
+- Partition key for dynamodb is using device id since we need to lookup device based on id

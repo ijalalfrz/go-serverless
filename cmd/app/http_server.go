@@ -4,7 +4,6 @@ import (
 	"context"
 	"log/slog"
 	"net/http/pprof"
-	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -21,8 +20,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var timeout = 30 * time.Second
-
 type handler func(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error)
 
 var httpServerCmd = &cobra.Command{
@@ -38,7 +35,7 @@ var httpServerCmd = &cobra.Command{
 	},
 }
 
-// create lambda handler
+// create lambda handler.
 func getLambdaHandler(cfg config.Config) handler {
 	lang.SetSupportedLanguages(cfg.Locales.SupportedLanguages)
 	lang.SetBasePath(cfg.Locales.BasePath)
@@ -70,7 +67,8 @@ func getLambdaHandler(cfg config.Config) handler {
 	chiLambda := chiv5adapter.NewV2(router)
 
 	return func(ctx context.Context,
-		req events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
+		req events.APIGatewayV2HTTPRequest,
+	) (events.APIGatewayV2HTTPResponse, error) {
 		return chiLambda.ProxyWithContextV2(ctx, req)
 	}
 }
