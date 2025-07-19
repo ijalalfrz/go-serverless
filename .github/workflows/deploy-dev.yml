@@ -11,8 +11,17 @@ on:
         description: 'Deploy code changes'
         type: boolean
         default: true
+      deploy_backend:
+        description: 'Deploy terraform backend'
+        type: boolean
+        default: true
 
 jobs:
+  deploy-backend:
+    if: ${{ inputs.deploy_backend }}
+    uses: ./.github/workflows/pre.yml
+    secrets: inherit
+
   deploy-infrastructure:
     if: ${{ inputs.deploy_infrastructure }}
     uses: ./.github/workflows/infra.yml
