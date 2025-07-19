@@ -14,23 +14,6 @@ func MustInitConfig(configFile string) Config {
 		cfg Config
 	)
 
-	// envList := []string{
-	// 	"LOG_LEVEL",
-	// 	"TRACING_ENABLED",
-	// 	"PROFILING_ENABLED",
-	// 	"DYNAMODB_ENDPOINT",
-	// 	"DYNAMODB_REGION",
-	// 	"DYNAMODB_TABLE_NAME",
-	// 	"PPROF_ENABLED",
-	// 	"ALLOWED_ORIGIN",
-	// 	"HTTP_CALLER_TIMEOUT",
-	// 	"LOCALES_BASE_PATH",
-	// 	"LOCALES_SUPPORTED_LANGUAGES",
-	// }
-	// for _, env := range envList {
-	// 	vpr.BindEnv(env)
-	// }
-
 	vpr.AutomaticEnv()
 
 	if configFile != "" {

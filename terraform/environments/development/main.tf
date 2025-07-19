@@ -39,7 +39,7 @@ module "lambda" {
     LOG_LEVEL           = "debug"
     DYNAMODB_REGION     = var.aws_region
     PROFILING_ENABLED   = "false"
-    LOCALES_BASE_PATH   = "./resources"
+    LOCALES_BASE_PATH   = "./resources/locales"
   }
 
   dynamodb_table_arn = module.dynamodb.table_arn
