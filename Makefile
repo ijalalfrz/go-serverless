@@ -58,7 +58,7 @@ docker-clean: docker-stop
 docker-restart: docker-stop docker-start
 
 environment: ## The only command needed to start a working environment
-environment: create-env-file docker-restart
+environment: create-env-file docker-restart build
 
 environment-clean: ## The only command needed to clean the environment
 environment-clean: docker-clean clean
