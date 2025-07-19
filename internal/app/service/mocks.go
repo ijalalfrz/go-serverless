@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 
 	"github.com/ijalalfrz/go-serverless/internal/app/model"
+	"github.com/ijalalfrz/go-serverless/internal/pkg/exception"
 )
 
 // Mock errors
@@ -16,11 +16,16 @@ var (
 
 // MockDeviceRepository implements DeviceRepository interface
 type MockDeviceRepository struct {
-	devices []model.Device
-	err     error
+	devices    []model.Device
+	err        error
+	getByIDErr error
+	createErr  error
 }
 
 func (m *MockDeviceRepository) Create(ctx context.Context, device model.Device) error {
+	if m.createErr != nil {
+		return m.createErr
+	}
 	if m.err != nil {
 		return m.err
 	}
@@ -29,15 +34,22 @@ func (m *MockDeviceRepository) Create(ctx context.Context, device model.Device) 
 }
 
 func (m *MockDeviceRepository) GetByID(ctx context.Context, id string) (model.Device, error) {
+	if m.getByIDErr != nil {
+		return model.Device{}, m.getByIDErr
+	}
 	if m.err != nil {
 		return model.Device{}, m.err
 	}
+
+	// Check if device exists in the mock data
 	for _, device := range m.devices {
 		if device.ID == id {
 			return device, nil
 		}
 	}
-	return model.Device{}, sql.ErrNoRows
+
+	// Return the error that the service expects
+	return model.Device{}, exception.ErrRecordNotFound
 }
 
 // Test data
