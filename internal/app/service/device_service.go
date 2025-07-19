@@ -23,6 +23,18 @@ func NewDeviceService(deviceRepo DeviceRepository) *DeviceService {
 	return &DeviceService{deviceRepo: deviceRepo}
 }
 
+// CreateDevice godoc
+// @Summary      Create Device
+// @Description  Create an Device
+// @Tags         Device
+// @ID           createDevice
+// @Produce      json
+// @Param        req body create device	body		dto.CreateDeviceRequest	true	"Device"
+// @Success      201  "Created"
+// @Failure      400  {object}  dto.ErrorResponse	"Bad Request"
+// @Failure      409  {object}  dto.ErrorResponse	"Conflict"
+// @Failure      500  {object}  dto.ErrorResponse	"Internal Server Error"
+// @Router       /api/devices [post].
 func (s *DeviceService) CreateDevice(ctx context.Context, req dto.CreateDeviceRequest) error {
 	device := model.Device{
 		ID:          req.ID,
@@ -43,6 +55,7 @@ func (s *DeviceService) CreateDevice(ctx context.Context, req dto.CreateDeviceRe
 		err.MessageVars = map[string]interface{}{
 			"name": "device",
 		}
+		err.UICode = exception.DeviceAlreadyExist
 
 		return err
 	}
@@ -54,6 +67,18 @@ func (s *DeviceService) CreateDevice(ctx context.Context, req dto.CreateDeviceRe
 	return nil
 }
 
+// GetDeviceByID godoc
+// @Summary      Get Device by ID
+// @Description  Get a Device by ID
+// @Tags         Device
+// @ID           getDeviceByID
+// @Produce      json
+// @Param        id path string true "Device ID"
+// @Success      200  {object}  dto.DeviceResponse	"OK"
+// @Failure      400  {object}  dto.ErrorResponse	"Bad Request"
+// @Failure      404  {object}  dto.ErrorResponse	"Record not found"
+// @Failure      500  {object}  dto.ErrorResponse	"Internal Server Error"
+// @Router       /api/devices/{id} [get].
 func (s *DeviceService) GetDeviceByID(ctx context.Context, req dto.GetDeviceByIDRequest) (dto.DeviceResponse, error) {
 	device, err := s.deviceRepo.GetByID(ctx, req.ID)
 	if err != nil {

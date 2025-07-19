@@ -273,10 +273,12 @@ make tests-suite
 - DynamoDB encryption at rest
 
 ## API Documentation
+- OpenAPI available in `docs/swagger.json`
+- Run `make api-docs` to generate OpenAPI doc
 
 ### Base URL
 - **Local**: `http://localhost:9000`
-- **Development**: `https://adytt253m7.execute-api.ap-southeast-1.amazonaws.com`
+- **Development**: `https://pp3bliepuc.execute-api.ap-southeast-1.amazonaws.com/api/devices`
 
 ### Endpoints
 For local you must to invoce function, since we are using aws-lambda locally
@@ -354,6 +356,7 @@ curl --location --request GET 'https://pp3bliepuc.execute-api.ap-southeast-1.ama
 ```
 
 ### Assumptions
+- using chi router for easy routing no need to create seperate lambda function for each endpoint
 - prefix /device/ in creation is a must for device id to make sure it is valid device
 - prefix /devicemodels/ in creation is a must for device id to make sure it is valid device
 - Partition key for dynamodb is using device id since we need to lookup device based on id

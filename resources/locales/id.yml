@@ -12,3 +12,4 @@ errors:
   source_and_destination_account_same: 'akun sumber dan tujuan tidak boleh sama'
   account_already_exists: 'akun sudah ada'
   invalid_request: 'Permintaan tidak valid karena {{.message}}'
+  record_already_exist: 'Data {{.name}} sudah ada'

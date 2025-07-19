@@ -41,6 +41,7 @@ func CreatedResponse(_ context.Context, w http.ResponseWriter, _ interface{}) er
 func ErrorResponse(ctx context.Context, err error, respWriter http.ResponseWriter) {
 	var (
 		appErr  exception.ApplicationError
+		uiErr   string
 		message string
 	)
 
@@ -54,15 +55,20 @@ func ErrorResponse(ctx context.Context, err error, respWriter http.ResponseWrite
 		// in case of failure to get request context, default language will be used
 		message = appErr.Localize(reqContext.Language)
 
+		uiErr = appErr.UICode
+
 		slog.Default().Debug("error", "cause", err.Error())
 	} else {
 		respWriter.WriteHeader(http.StatusInternalServerError)
+
+		uiErr = exception.InternalServerError
 
 		message = err.Error()
 	}
 
 	//nolint:errcheck,errchkjson
 	json.NewEncoder(respWriter).Encode(dto.ErrorResponse{
-		Error: message,
+		Error:  message,
+		UICode: uiErr,
 	})
 }

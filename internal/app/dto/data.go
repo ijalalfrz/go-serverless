@@ -8,5 +8,6 @@ var validate = validator.New()
 
 // ErrorResponse response payload.
 type ErrorResponse struct {
-	Error string `json:"error"`
+	Error  string `json:"error"`
+	UICode string `json:"uiCode"` //nolint:tagliatelle
 }

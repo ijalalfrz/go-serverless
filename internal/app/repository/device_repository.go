@@ -63,6 +63,7 @@ func (r *DeviceRepository) GetByID(ctx context.Context, id string) (model.Device
 		err.MessageVars = map[string]interface{}{
 			"name": "device",
 		}
+		err.UICode = exception.DeviceNotFound
 
 		return model.Device{}, err
 	}
