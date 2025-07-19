@@ -5,7 +5,7 @@ resource "aws_apigatewayv2_api" "api" {
 
 resource "aws_apigatewayv2_stage" "stage" {
   api_id      = aws_apigatewayv2_api.api.id
-  name        = var.environment
+  name        = "$default"
   auto_deploy = true
 }
 
@@ -15,6 +15,12 @@ resource "aws_apigatewayv2_integration" "lambda" {
   integration_uri    = var.lambda_function_invoke_arn
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
+}
+
+resource "aws_apigatewayv2_route" "default" {
+  api_id = aws_apigatewayv2_api.api.id
+  route_key = "ANY /"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }
 
 resource "aws_apigatewayv2_route" "route" {
