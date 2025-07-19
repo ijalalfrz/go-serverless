@@ -130,6 +130,15 @@ make tests-unit
 make static-analysis
 ```
 
+### AWS Lambda Pipeline
+- Run workflow to setup terraform backend to store state using S3 in `.github/workflow/pre`
+- Create PR from `feature` branch to `main` branch it will run CI pipeline
+- Merge PR first time will trigger `Deploy infrastructure` pipeline to create DynamoDB, Lambda, Gateway resource also with IAM Policy
+- Merge PR also trigger code build if there is only code change will use aws cli function to update application zip file
+- Next PR will check if there is `/terraform` update then will also trigger Infra pipeline update
+- Next PR will check if there is only code change then will also trigger code deployment pipeline
+- AWS Cli used in code deployment because it's faster since we only want to update code
+
 ### API Endpoints
 
 #### Health Check
