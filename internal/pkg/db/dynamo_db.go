@@ -2,7 +2,6 @@ package db
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -12,16 +11,20 @@ import (
 )
 
 func InitDynamoDB(appConfig cfg.Config) *dynamodb.Client {
-	fmt.Println("appConfig.DynamoDB.Endpoint", appConfig.DynamoDB.Endpoint)
-	fmt.Println("appConfig.DynamoDB.Region", appConfig.DynamoDB.Region)
-	awsCfg, err := config.LoadDefaultConfig(context.TODO(),
+
+	opts := []func(*config.LoadOptions) error{
 		config.WithRegion(appConfig.DynamoDB.Region),
-		config.WithEndpointResolver(aws.EndpointResolverFunc(
+	}
+
+	if appConfig.DynamoDB.Endpoint != "" {
+		opts = append(opts, config.WithEndpointResolver(aws.EndpointResolverFunc(
 			func(service, region string) (aws.Endpoint, error) {
 				return aws.Endpoint{URL: appConfig.DynamoDB.Endpoint}, nil
 			},
-		)),
-	)
+		)))
+	}
+
+	awsCfg, err := config.LoadDefaultConfig(context.TODO(), opts...)
 	if err != nil {
 		slog.Error("failed to load default config", "error", err)
 		panic(err)
