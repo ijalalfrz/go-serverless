@@ -34,7 +34,7 @@ func MustInitConfig(configFile string) Config {
 
 	vpr.WatchConfig()
 
-	slog.Info("cfg", slog.String("config", fmt.Sprintf("%v", cfg)))
+	slog.Debug("cfg", slog.String("config", fmt.Sprintf("%v", cfg)))
 
 	return cfg
 }

@@ -114,7 +114,7 @@ api-docs: ## Generate API docs with swaggo
 	@echo "========================="
 	@echo "Generate Swagger API Docs"
 	@echo "========================="
-	go install github.com/swaggo/swag/cmd/swag@latest
+	go install github.com/swaggo/swag/cmd/swag@v1.16.5
 	swag init --parseDependency --parseInternal -g cmd/main.go -ot "json"
 
 #======================#

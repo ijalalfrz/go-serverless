@@ -19,15 +19,17 @@ type CreateDeviceRequest struct {
 
 func (r *CreateDeviceRequest) Bind(_ *http.Request) error {
 	if err := validate.Struct(r); err != nil {
-		return NewInvalidRequestError(err)
+		return NewInvalidRequestError(err, InvalidRequestDevicePrefix)
 	}
 
 	if !validatePrefixDeviceID(r.ID) {
-		return NewInvalidRequestError(errors.New("device id must start with /devices/"))
+		return NewInvalidRequestError(errors.New("device id must start with /devices/"),
+			InvalidRequestDevicePrefix)
 	}
 
 	if !validatePrefixDeviceModel(r.DeviceModel) {
-		return NewInvalidRequestError(errors.New("device model must start with /devicemodels/"))
+		return NewInvalidRequestError(errors.New("device model must start with /devicemodels/"),
+			InvalidRequestDeviceModelPrefix)
 	}
 
 	return nil
@@ -51,7 +53,7 @@ func (r *GetDeviceByIDRequest) Bind(req *http.Request) error {
 	r.ID = id
 
 	if err := validate.Struct(r); err != nil {
-		return NewInvalidRequestError(err)
+		return NewInvalidRequestError(err, RequiredDeviceID)
 	}
 
 	return nil

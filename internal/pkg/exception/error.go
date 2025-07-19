@@ -18,6 +18,14 @@ const (
 	CodeConflict      = http.StatusConflict
 )
 
+// Error codes for ui application errors.
+const (
+	DeviceAlreadyExist  = "DEVICE_ALREADY_EXIST"
+	DeviceNotFound      = "DEVICE_NOT_FOUND"
+	InternalServerError = "INTERNAL_SERVER_ERROR"
+	InvalidRequest      = "INVALID_REQUEST"
+)
+
 var (
 	ErrRecordNotFound = ApplicationError{
 		Localizable: lang.Localizable{
@@ -56,6 +64,7 @@ var (
 type ApplicationError struct {
 	lang.Localizable
 	StatusCode int
+	UICode     string
 	Cause      error
 }
 

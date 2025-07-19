@@ -1,0 +1,169 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "balance transfer simulation with event sourcing database schema",
+        "title": "Go Event Source API",
+        "contact": {},
+        "license": {
+            "name": "Ijal Alfarizi",
+            "url": "https://techwithrizal.com"
+        },
+        "version": "1.0.0"
+    },
+    "host": "https://pp3bliepuc.execute-api.ap-southeast-1.amazonaws.com",
+    "basePath": "/",
+    "paths": {
+        "/api/devices": {
+            "post": {
+                "description": "Create an Device",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Device"
+                ],
+                "summary": "Create Device",
+                "operationId": "createDevice",
+                "parameters": [
+                    {
+                        "description": "Device",
+                        "name": "device",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.CreateDeviceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/devices/{id}": {
+            "get": {
+                "description": "Get a Device by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Device"
+                ],
+                "summary": "Get Device by ID",
+                "operationId": "getDeviceByID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Device ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.DeviceResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.ErrorResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Record not found",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_ijalalfrz_go-serverless_internal_app_dto.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_ijalalfrz_go-serverless_internal_app_dto.CreateDeviceRequest": {
+            "type": "object",
+            "required": [
+                "deviceModel",
+                "id",
+                "name",
+                "note",
+                "serial"
+            ],
+            "properties": {
+                "deviceModel": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "serial": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_ijalalfrz_go-serverless_internal_app_dto.DeviceResponse": {
+            "type": "object",
+            "properties": {
+                "deviceModel": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "serial": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_ijalalfrz_go-serverless_internal_app_dto.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

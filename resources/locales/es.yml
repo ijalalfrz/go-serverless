@@ -12,3 +12,4 @@ errors:
   source_and_destination_account_same: 'cuenta de origen y destino no pueden ser la misma'
   account_already_exists: 'cuenta ya existe'
   invalid_request: 'Solicitud inválida causada por {{.message}}'
+  record_already_exist: 'Registro de {{.name}} ya existe'

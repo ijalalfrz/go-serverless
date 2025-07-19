@@ -7,7 +7,13 @@ import (
 	"github.com/ijalalfrz/go-serverless/internal/pkg/lang"
 )
 
-func NewInvalidRequestError(err error) exception.ApplicationError {
+const (
+	InvalidRequestDevicePrefix      = "INVALID_REQUEST_DEVICE_PREFIX"
+	InvalidRequestDeviceModelPrefix = "INVALID_REQUEST_DEVICE_MODEL_PREFIX"
+	RequiredDeviceID                = "REQUIRED_DEVICE_ID_PARAM"
+)
+
+func NewInvalidRequestError(err error, uiCode string) exception.ApplicationError {
 	return exception.ApplicationError{
 		StatusCode: http.StatusBadRequest,
 		Localizable: lang.Localizable{
@@ -16,6 +22,7 @@ func NewInvalidRequestError(err error) exception.ApplicationError {
 				"message": err.Error(),
 			},
 		},
-		Cause: err,
+		UICode: uiCode,
+		Cause:  err,
 	}
 }

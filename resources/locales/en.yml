@@ -12,3 +12,4 @@ errors:
   source_and_destination_account_same: 'source and destination account cannot be the same'
   account_already_exists: 'account already exists'
   invalid_request: 'Invalid request caused by {{.message}}'
+  record_already_exist: '{{.name}} record already exist'
